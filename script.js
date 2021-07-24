@@ -1,5 +1,12 @@
-const draggables = document.querySelectorAll('.draggable')
+const draggables = document.querySelectorAll('.draggable');
 const containers = document.querySelectorAll(".container");
+const checkboxes = document.querySelectorAll(".checkboxes");
+
+checkboxes.forEach(checkbox => {
+  checkbox.addEventListener("input",()=>{
+    checkbox.parentElement.classList.toggle("checked");
+  })
+})
 
 
 draggables.forEach(draggable => {
