@@ -1,6 +1,5 @@
 body {
   margin:0;
-  overflow: hidden;
   background-color: white;
   color:black;
 }
@@ -36,6 +35,10 @@ h1 {
   outline:none;
   border:none;
   font-size:medium;
+}
+
+.draggable input[type=text]:focus {
+  border: .5px solid grey;
 }
 
 .draggable.checked input[type=text] {

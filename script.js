@@ -1,6 +1,6 @@
 const draggables = document.querySelectorAll('.draggable');
 const containers = document.querySelectorAll(".container");
-const checkboxes = document.querySelectorAll(".checkboxes");
+let checkboxes = document.querySelectorAll(".checkboxes");
 
 checkboxes.forEach(checkbox => {
   checkbox.addEventListener("input",()=>{
@@ -10,13 +10,7 @@ checkboxes.forEach(checkbox => {
 
 
 draggables.forEach(draggable => {
-  draggable.addEventListener("dragstart", () =>{
-    draggable.classList.add("dragging");
-  })
-
-  draggable.addEventListener("dragend", () => {
-    draggable.classList.remove("dragging");
-  })
+  addTheEventListeners(draggable);
 })
 
 containers.forEach(container => {
@@ -31,6 +25,39 @@ containers.forEach(container => {
   })
 })
 
+//adds a new input zone just below the draggable that called the event
+function addNewInput(draggable){
+  let newZone = document.createElement("div");
+  newZone.classList.add("draggable");
+  newZone.setAttribute("draggable","true");
+  newZone.innerHTML ='<input type="checkbox" name="tick" class="checkboxes new"> <input type="text">';
+  draggable.parentElement.insertBefore(newZone, draggable.nextSibling);
+  addTheEventListeners(newZone);//makes sure the new element listens to the dragging events and enter press event
+}
+
+//adds all the neccessary events for the draggables : drag start & end and keyup enter
+function addTheEventListeners(draggable) {
+    draggable.addEventListener("dragstart", () =>{
+      draggable.classList.add("dragging");
+    })
+  
+    draggable.addEventListener("dragend", () => {
+      draggable.classList.remove("dragging");
+    })
+  
+    draggable.addEventListener("keyup", e => {
+      if(e.keyCode === 13) {
+        addNewInput(draggable);
+        //makes sure all the new checkboxes are listening for input to tick the right text once validated
+        let checkboxes = document.querySelectorAll(".checkboxes.new");//finds the new checkboxes
+        checkboxes.forEach(checkbox => {
+          checkbox.addEventListener("input",()=>{
+            checkbox.parentElement.classList.toggle("checked");
+          })
+        })
+      }
+    })
+}
 
 function getAfterElement(container, Y) {
   const elements = [...container.querySelectorAll(".draggable:not(.dragging)")];
